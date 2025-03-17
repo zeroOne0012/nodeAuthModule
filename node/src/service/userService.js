@@ -4,21 +4,13 @@ const JwtUtil = require("../module/jwtUtil");
 const UserRepository = require("../repository/userRepository");
 
 class userService{
-    static #instance = null;
     #jwtUtil;
     #userRepository;
 
-    constructor(){
-        this.#jwtUtil = JwtUtil.getInstance();
-        this.#userRepository = UserRepository.getInstance();
+    constructor({jwtUtil, userRepository}){
+        this.#jwtUtil = jwtUtil;
+        this.#userRepository = userRepository;
     }
-
-    static getInstance = ()=>{
-        if(!userService.#instance){
-            userService.#instance = new userService();
-        }
-        return userService.#instance;
-    };
 
     hashPw = async (password) => {
         const salt = 10;
@@ -36,10 +28,10 @@ class userService{
         if(!user){
             throw new customError(404, "Not Found", "Wrong pswd or id");
         }
-        
+
         // pswd
         if(!await this.comparePw(pswd, user.password)){
-            throw new customError(404, "Not Found", "Wrong pswd or id~~~~~");
+            throw new customError(404, "Not Found", "Wrong pswd or id");
         }
 
         // 페이로드

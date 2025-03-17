@@ -5,16 +5,9 @@ class userController{
     static #instance = null;
     #userService; // private
 
-    constructor() {
-        this.#userService = UserService.getInstance();
+    constructor({userService}) {
+        this.#userService = userService; // 외부에서 DI
     }
-
-    static getInstance = ()=>{
-        if(!userController.#instance){
-            userController.#instance = new userController();
-        }
-        return userController.#instance;
-    };
 
     login = async (req, res, next) => {
         try{

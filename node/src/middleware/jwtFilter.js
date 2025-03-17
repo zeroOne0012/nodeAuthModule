@@ -15,8 +15,16 @@ jwtFilter = async (req) => {
         req.user = await authService.verifyToken(token); // 반환값: 디코딩된 토큰의 페이로드 (서명한 사용자 객체)
         next();
     }catch(e){
-        next(new customError(403, "Forbidden", "Rejected")); // 권한 X
+        next(new customError(403, "Forbidden", "Expired token")); // 만료
     }
+
+    // 권한 설정 !
+    // try{
+    //     //
+    //     next();
+    // }catch(e){
+    //     next(new customError(403, "Forbidden", "Expired token")); // 만료
+    // }
 
 };
 module.exports=jwtFilter;
