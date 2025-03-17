@@ -12,7 +12,7 @@ class userRepository{
         return userRepository.#instance;
     };
 
-    getUserById = async (id) =>{
+    findUserById = async (id) =>{
         try{
             const query = "SELECT * FROM USERS WHERE id = $1";
             const {rows} = await pool.query(query, [id]);
@@ -22,10 +22,31 @@ class userRepository{
         }
     };
 
-    create = async (id, pswd, nickname) => {
+    findUserByIdAndPassword = async (id, password) =>{
+        try{
+            const query = `
+            SELECT 
+                u.id, 
+                u.nickname, 
+                r.role_name
+            FROM users u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE u.id = $1 AND u.password = $2;
+            `
+            // console.log("QUERY:", query);
+            // console.log("PARAMS:", [id,password]);
+            const {rows} = await pool.query(query, [id, password]);
+            // console.log("RESULT:", rows);
+            return rows[0];
+        }catch(e){ //404
+            throw e;
+        }
+    };
+
+    create = async (id, password, nickname) => {
         try{
             const query = "INSERT INTO USERS(id, password, nickname) VALUES($1, $2, $3) RETURNING *;";
-            const {rows} = await pool.query(query, [id, pswd, nickname]);
+            const {rows} = await pool.query(query, [id, password, nickname]);
             return rows[0];
         }catch(e){
             throw new customError(409, "Conflict", "User with this ID already exists");

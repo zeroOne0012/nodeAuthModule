@@ -30,16 +30,30 @@ class userService{
         return await bcrypt.compare(password,hashedPassword);
     };
 
-    login = async (id,pswd)=>{
-        // console.log(id," ",pswd);
-        // id/pswd 검증 필요
-        const token = await this.#jwtUtil.generateToken({id:id, pswd:pswd});
-        // header 설정 필요
+    getAccessToken = async (id,pswd)=>{
+        // id,pswd 확인
+        const pswdHashed = await this.hashPw(pswd);
+        const user = await this.#userRepository.findUserByIdAndPassword(id,pswdHashed);
+        if(!user){
+            throw new customError(404, "Not Found", "Wrong pswd or id");
+        }
+        
+        // 페이로드
+        const payload = {
+            id: user.id,
+            nickname: user.nickname,
+            role: user.role
+        };
+
+        const token = await this.#jwtUtil.generateToken(payload);
+        if(!token){
+            throw new Error();
+        }
         return token;
     };
 
     getUser = async (id) => {
-        const user = await this.#userRepository.getUserById(id);
+        const user = await this.#userRepository.findUserById(id);
         if(!user){
             throw new customError(404, "Not Found", "User with this ID not found");
         }

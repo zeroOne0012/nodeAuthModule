@@ -17,10 +17,15 @@ class userController{
     };
 
     login = async (req, res, next) => {
-        const id = req.body.id;
-        const pswd = req.body.password;
-        const resDTO = await this.#userService.login(id,pswd);
-        res.status(200).json({resDTO});
+        try{
+            const { id, password } = req.body;
+            const token = await this.#userService.getAccessToken(id,password);
+            // 헤더 토큰 추가
+            res.setHeader("Authorization", `Bearer ${token}`);
+            res.status(200).json({ message: "Login successful", token });
+        } catch(e){
+            next(e);
+        }
     };
 
     getUser = async (req, res, next) => {
