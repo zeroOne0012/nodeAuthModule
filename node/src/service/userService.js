@@ -32,12 +32,16 @@ class userService{
 
     getAccessToken = async (id,pswd)=>{
         // id,pswd 확인
-        const pswdHashed = await this.hashPw(pswd);
-        const user = await this.#userRepository.findUserByIdAndPassword(id,pswdHashed);
+        const user = await this.#userRepository.findUserById(id);
         if(!user){
             throw new customError(404, "Not Found", "Wrong pswd or id");
         }
         
+        // pswd
+        if(!await this.comparePw(pswd, user.password)){
+            throw new customError(404, "Not Found", "Wrong pswd or id~~~~~");
+        }
+
         // 페이로드
         const payload = {
             id: user.id,

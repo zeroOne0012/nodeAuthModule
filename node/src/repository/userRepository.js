@@ -14,32 +14,20 @@ class userRepository{
 
     findUserById = async (id) =>{
         try{
-            const query = "SELECT * FROM USERS WHERE id = $1";
-            const {rows} = await pool.query(query, [id]);
-            return rows[0];
-        }catch(e){
-            throw new Error(`Internal Server Error: ${e}`);
-        }
-    };
-
-    findUserByIdAndPassword = async (id, password) =>{
-        try{
             const query = `
             SELECT 
                 u.id, 
                 u.nickname, 
+                u.password,
                 r.role_name
             FROM users u
             LEFT JOIN roles r ON u.role_id = r.id
-            WHERE u.id = $1 AND u.password = $2;
-            `
-            // console.log("QUERY:", query);
-            // console.log("PARAMS:", [id,password]);
-            const {rows} = await pool.query(query, [id, password]);
-            // console.log("RESULT:", rows);
+            WHERE u.id = $1;
+            `;
+            const {rows} = await pool.query(query, [id]);
             return rows[0];
-        }catch(e){ //404
-            throw e;
+        }catch(e){
+            throw new Error(`Internal Server Error: ${e}`);
         }
     };
 
