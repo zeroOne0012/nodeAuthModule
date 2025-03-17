@@ -39,9 +39,17 @@ class userService{
     };
 
     getUser = async (id) => {
-        await this.#userRepository.getUserById(id);
+        const user = await this.#userRepository.getUserById(id);
+        if(!user){
+            throw new customError(404, "Not Found", "User with this ID not found");
+        }
+        return user;
     };
     
+    register = async (id, pswd, nickname)=>{
+        const pswdHashed = await this.hashPw(pswd);
+        await this.#userRepository.create(id, pswdHashed, nickname);
+    }
 }
 
 module.exports = userService;

@@ -16,14 +16,21 @@ class userRepository{
         try{
             const query = "SELECT * FROM USERS WHERE id = $1";
             const {rows} = await pool.query(query, [id]);
-            if(rows.length===0){
-                throw new customError(404, "Not Found", "User with ID not found");
-            }
             return rows[0];
         }catch(e){
-            throw e;
+            throw new Error(`Internal Server Error: ${e}`);
         }
-    }
+    };
+
+    create = async (id, pswd, nickname) => {
+        try{
+            const query = "INSERT INTO USERS(id, password, nickname) VALUES($1, $2, $3) RETURNING *;";
+            const {rows} = await pool.query(query, [id, pswd, nickname]);
+            return rows[0];
+        }catch(e){
+            throw new customError(409, "Conflict", "User with this ID already exists");
+        }
+    };
 }
 
 module.exports = userRepository;

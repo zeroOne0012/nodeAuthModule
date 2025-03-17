@@ -1,3 +1,4 @@
+const customError = require("../module/customError");
 const UserService = require("../service/userService");
 
 class userController{
@@ -15,7 +16,7 @@ class userController{
         return userController.#instance;
     };
 
-    login = async (req, res) => {
+    login = async (req, res, next) => {
         const id = req.body.id;
         const pswd = req.body.password;
         const resDTO = await this.#userService.login(id,pswd);
@@ -25,7 +26,25 @@ class userController{
     getUser = async (req, res, next) => {
         try{
             const id = req.params.id;
-            await this.#userService.getUser(id);
+            const user = await this.#userService.getUser(id);
+            // res.status(200).json({id:user.id, nickname:user.nickname}); // 비밀번호 제외
+            const {password, ...userDTO} = user;
+            res.status(200).json(userDTO); // 비밀번호 제외
+        } catch (e){
+            next(e);
+        }
+    };
+
+    register = async (req, res, next) =>{
+        try{
+            const id = req.body.id;
+            const pswd = req.body.password;
+            const nickname = req.body.nickname;
+            if(!id || !pswd || !nickname){
+                throw new customError(400, "Bad Request", "비어있는 항목이 있습니다.");
+            }
+            await this.#userService.register(id,pswd, nickname);
+            res.status(201).json();
         } catch (e){
             next(e);
         }
