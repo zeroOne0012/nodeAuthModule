@@ -1,6 +1,7 @@
 create table users(
     id serial primary key,
-    password varchar(255) not null
+    password varchar(255) not null,
+    nickname varchar(16) not null
 );
 create table roles(
     id serial primary key,

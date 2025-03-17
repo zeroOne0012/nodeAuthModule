@@ -1,21 +1,23 @@
 const bcrypt = require("bcrypt");
 const customError = require("../module/customError");
 const JwtUtil = require("../module/jwtUtil");
-
+const UserRepository = require("../repository/userRepository");
 
 class userService{
-    static instance = null;
+    static #instance = null;
     #jwtUtil;
+    #userRepository;
 
     constructor(){
         this.#jwtUtil = JwtUtil.getInstance();
+        this.#userRepository = UserRepository.getInstance();
     }
 
     static getInstance = ()=>{
-        if(!userService.instance){
-            userService.instance = new userService();
+        if(!userService.#instance){
+            userService.#instance = new userService();
         }
-        return userService.instance;
+        return userService.#instance;
     };
 
     hashPw = async (password) => {
@@ -34,7 +36,11 @@ class userService{
         const token = await this.#jwtUtil.generateToken({id:id, pswd:pswd});
         // header 설정 필요
         return token;
-    }
+    };
+
+    getUser = async (id) => {
+        await this.#userRepository.getUserById(id);
+    };
     
 }
 

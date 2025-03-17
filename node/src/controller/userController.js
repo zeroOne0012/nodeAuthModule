@@ -1,7 +1,7 @@
 const UserService = require("../service/userService");
 
 class userController{
-    static instance = null;
+    static #instance = null;
     #userService; // private
 
     constructor() {
@@ -9,20 +9,25 @@ class userController{
     }
 
     static getInstance = ()=>{
-        if(!userController.instance){
-            userController.instance = new userController();
+        if(!userController.#instance){
+            userController.#instance = new userController();
         }
-        return userController.instance;
+        return userController.#instance;
     };
 
-    login = async (req, res, next) => {
+    login = async (req, res) => {
+        const id = req.body.id;
+        const pswd = req.body.password;
+        const resDTO = await this.#userService.login(id,pswd);
+        res.status(200).json({resDTO});
+    };
+
+    getUser = async (req, res, next) => {
         try{
-            const id = req.body.id;
-            const pswd = req.body.password;
-            const resDTO = await this.#userService.login(id,pswd);
-            res.status(200).json({resDTO});
-        } catch(e){
-            next(new Error("userService_error"));
+            const id = req.params.id;
+            await this.#userService.getUser(id);
+        } catch (e){
+            next(e);
         }
     };
 }
