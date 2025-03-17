@@ -1,0 +1,42 @@
+const bcrypt = require("bcrypt");
+const customError = require("../module/customError");
+const JwtUtil = require("../module/jwtUtil");
+
+
+class userService{
+    static instance = null;
+    #jwtUtil;
+
+    constructor(){
+        this.#jwtUtil = JwtUtil.getInstance();
+    }
+
+    static getInstance = ()=>{
+        if(!userService.instance){
+            userService.instance = new userService();
+        }
+        return userService.instance;
+    };
+
+    hashPw = async (password) => {
+        const salt = 10;
+        // const salt_ = await bcrypt.genSalt(salt);
+        return await bcrypt.hash(password, salt);
+    };
+
+    comparePw = async (password, hashedPassword) =>{
+        return await bcrypt.compare(password,hashedPassword);
+    };
+
+    login = async (id,pswd)=>{
+        // console.log(id," ",pswd);
+        // id/pswd 검증 필요
+        const token = await this.#jwtUtil.generateToken({id:id, pswd:pswd});
+        // header 설정 필요
+        return token;
+    }
+    
+}
+
+module.exports = userService;
+

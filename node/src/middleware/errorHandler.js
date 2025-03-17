@@ -1,5 +1,5 @@
 const errorHandler = (err, req, res, next) => {
-    console.error(`[Error] ${err.message}`);
+    console.error(`[Error] ${err.message || "Undefined_Error"}`);
 
     const statusCode = err.statusCode || 500; // 기본값 500
     res.status(statusCode).json({

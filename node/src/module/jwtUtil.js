@@ -1,25 +1,26 @@
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const customError = require("../module/customError");
 require('dotenv').config();
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
-class authService{
-    hashPw = async (password) => {
-        const salt = 10;
-        // const salt_ = await bcrypt.genSalt(salt);
-        return await bcrypt.hash(password, salt);
+class jwtUtil{
+    static instance = null;
+
+    static getInstance = ()=>{
+        if(!jwtUtil.instance){
+            jwtUtil.instance = new jwtUtil();
+        }
+        return jwtUtil.instance;
     };
 
-    comparePw = async (password, hashedPassword) =>{
-        return await bcrypt.compare(password,hashedPassword);
-    };
     // 토큰 생성
     generateToken = async (userData)=>{
         // 헤더는 자동 생성
         try{
-            return jwt.sign(userData, jwtSecretKey, { expiresIn: "1h" }); // 3600초 뒤 만료
+            return jwt.sign(userData, jwtSecretKey); // 만료 시간 없음
+            // return jwt.sign(userData, jwtSecretKey, { expiresIn: "1h" }); // 3600초 뒤 만료
         } catch(e){
             next(new customError(500, "INTERNAL SERVER ERROR", e));
         }
@@ -34,15 +35,7 @@ class authService{
     };
 }
 
-/*
-        if (e.name === "TokenExpiredError") {
-            next(new customError(401, "Token expired", e)); // 만료된 토큰 → 401 Unauthorized
-        } else {
-            next(new customError(403, "Invalid token", e)); // 잘못된 토큰 → 403 Forbidden
-        }
-*/
-
-module.exports = new authService();
+module.exports = jwtUtil;
 
 
 // res.cookie("token", token, {
