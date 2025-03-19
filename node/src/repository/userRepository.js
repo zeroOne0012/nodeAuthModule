@@ -14,7 +14,8 @@ class userRepository{
                 u.id, 
                 u.nickname, 
                 u.password,
-                r.role_name
+                u.role_id,
+                r.role_name role
             FROM users u
             LEFT JOIN roles r ON u.role_id = r.id
             WHERE u.id = $1;

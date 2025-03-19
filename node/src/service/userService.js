@@ -38,6 +38,7 @@ class userService{
         const payload = {
             id: user.id,
             nickname: user.nickname,
+            role_id: user.role_id,
             role: user.role
         };
 
