@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "dev": "npx nodemon server"
+    "start": "node ./src/server",
+    "dev": "npx nodemon ./src/server"
   },
   "keywords": [],
   "author": "handalab",
@@ -17,5 +17,8 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.14.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
