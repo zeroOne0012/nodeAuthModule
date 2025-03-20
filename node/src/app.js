@@ -30,9 +30,9 @@ app.use('/api/user', userRouter);
 // test(temp)
 const testRouter = require("./router/testRouter");
 app.use("/test", testRouter);
-// app.get("/", (req, res)=>{
-//     res.send("Node Server");
-// });
+app.get("/", (req, res)=>{
+    res.send("Node Server");
+});
 // app.get("/error-test", (req, res, next)=>{
 //     next(new Error("TEST"));
 // });

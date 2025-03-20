@@ -4,7 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./src/server",
-    "dev": "npx nodemon ./src/server"
+    "dev": "npx nodemon ./src/server",
+    "test": "npx jest"
   },
   "keywords": [],
   "author": "handalab",
@@ -19,6 +20,7 @@
     "pg": "^8.14.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   }
 }
