@@ -1,7 +1,6 @@
-const bcrypt = require("bcrypt");
-const customError = require("../module/customError");
-const JwtUtil = require("../module/jwtUtil");
-const UserRepository = require("../repository/userRepository");
+import bcrypt from "bcrypt";
+import customError from "../module/customError.js";
+import UserRepository from "../repository/userRepository.js";
 
 class userService{
     #jwtUtil;
@@ -63,5 +62,4 @@ class userService{
     }
 }
 
-module.exports = userService;
-
+export default userService;

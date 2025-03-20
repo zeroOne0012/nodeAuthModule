@@ -11,4 +11,4 @@ class testController{
     };
 }
 
-module.exports = new testController;
+export default new testController;

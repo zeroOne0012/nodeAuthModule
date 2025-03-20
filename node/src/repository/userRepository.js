@@ -1,4 +1,4 @@
-const customError = require("../module/customError");
+import customError from "../module/customError.js";
 
 class userRepository{
     #pool;
@@ -38,4 +38,4 @@ class userRepository{
     };
 }
 
-module.exports = userRepository;
+export default userRepository;

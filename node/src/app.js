@@ -1,14 +1,14 @@
-const express = require("express");
-const cors = require("cors");
-const errorHandler = require("./middleware/errorHandler")
-const logger = require("./middleware/logger");
+import express from "express";
+import cors from "cors";
+import errorHandler from "./middleware/errorHandler.js";
+import logger from "./middleware/logger.js";
 
 // DI
-const pool = require('./module/pool');
-const JwtUtil = require('./module/jwtUtil');
-const UserService = require('./service/userService');
-const UserRepository = require('./repository/userRepository');
-const userController = require('./controller/userController');
+import pool from './module/pool.js';
+import JwtUtil from './module/jwtUtil.js';
+import UserService from './service/userService.js';
+import UserRepository from './repository/userRepository.js';
+import userController from './controller/userController.js';
 
 const userRepository = new UserRepository({pool});
 const jwtUtil = JwtUtil.getInstance();
@@ -24,11 +24,11 @@ app.use(cors());
 app.use(logger); // logger middleware
 
 // router
-const userRouter = require("./router/userRouter")(controller);
-app.use('/api/user', userRouter);
+import userRouter from "./router/userRouter.js";
+app.use('/api/user', userRouter(controller));
 
 // test(temp)
-const testRouter = require("./router/testRouter");
+import testRouter from "./router/testRouter.js";
 app.use("/test", testRouter);
 app.get("/", (req, res)=>{
     res.send("Node Server");
@@ -40,4 +40,4 @@ app.get("/", (req, res)=>{
 app.use(errorHandler); // errorHandler middleware
 
 
-module.exports = app;
+export default app;

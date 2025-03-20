@@ -1,5 +1,4 @@
-const customError = require("../module/customError");
-const UserService = require("../service/userService");
+import customError from "../module/customError.js";
 
 class userController{
     static #instance = null;
@@ -49,4 +48,4 @@ class userController{
     };
 }
 
-module.exports = userController;
+export default userController;

@@ -1,7 +1,8 @@
-// const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const customError = require("../module/customError");
-require('dotenv').config();
+import jwt from "jsonwebtoken";
+import customError from "../module/customError.js";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
@@ -35,4 +36,4 @@ class jwtUtil{
     };
 }
 
-module.exports = jwtUtil;
+export default jwtUtil;

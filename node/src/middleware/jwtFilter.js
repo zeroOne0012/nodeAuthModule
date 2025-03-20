@@ -1,8 +1,10 @@
-const customError = require("../module/customError");
-const jwtUtil = require("../module/jwtUtil").getInstance();
+import customError from "../module/customError.js";
+import JwtUtil from "../module/jwtUtil.js";
+
+const jwtUtil = JwtUtil.getInstance();
 
 // jwt 인증 미들웨어
-jwtFilter = (requiredRole) => async (req,res,next) => {
+const jwtFilter = (requiredRole) => async (req,res,next) => {
     const authHeader = req.header("Authorization");
 
     if(!authHeader || !/^Bearer/.test(authHeader)){
@@ -32,4 +34,4 @@ jwtFilter = (requiredRole) => async (req,res,next) => {
         }
     }
 };
-module.exports=jwtFilter;
+export default jwtFilter;
