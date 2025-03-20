@@ -1,8 +1,9 @@
 // ChatGPT Code
 
-const bcrypt = require("bcrypt");
-const UserService = require("../src/service/userService");
-const customError = require("../src/module/customError");
+import UserService from "../src/service/userService.js";
+import customError from "../src/module/customError.js";
+import { jest } from "@jest/globals";
+import bcrypt from "bcrypt";
 
 // Mock Dependencies
 const mockUserRepository = {
